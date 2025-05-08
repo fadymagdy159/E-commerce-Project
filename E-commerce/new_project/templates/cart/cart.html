@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .cart-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .cart-row.header {
+        font-weight: bold;
+    }
+
+    .cart-row img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .quantity-input {
+        width: 50px;
+    }
+
+    .checkout-container {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px 0;
+        margin-top: 20px;
+    }
+
+    .total-section {
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid #ccc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .total-section .total-label {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .total-section .total-value {
+        font-size: 1.2em;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element">
+            <a class="btn btn-outline-dark" href="{% url 'all_products' %}">&#x2190; Continue Shopping</a>
+            <br><br>
+        </div>
+        <br>
+        <div class="box-element">
+            <div class="cart-row header">
+                <div style="flex:2"><strong>Item</strong></div>
+                <div style="flex:1"><strong>Price</strong></div>
+                <div style="flex:1"><strong>Quantity</strong></div>
+                <div style="flex:1"><strong>Total</strong></div>
+                <div style="flex:1"><strong>Action</strong></div>
+            </div>
+            {% for item in items %}
+                {% if item.product and item.product.id %}
+                <div class="cart-row">
+                    <div style="flex:2">
+                        <div style="display: flex; align-items: center;">
+                            <img src="{{ item.product.img }}" alt="{{ item.product.name }}">
+                            <p>{{ item.product.name }}</p>
+                        </div>
+                    </div>
+                    <div style="flex:1"><p>${{ item.product.price|floatformat:2 }}</p></div>
+                    <div style="flex:1">
+                        <form action="{% url 'update_cart' item.product.id %}" method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" class="quantity-input" min="1">
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                    </div>
+                    <div style="flex:1"><p class="product-total">${{ item.get_total|floatformat:2 }}</p></div>
+                    <div style="flex:1">
+                        <form action="{% url 'remove_from_cart' item.product.id %}" method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            {% empty %}
+            <div class="cart-row">
+                <p>Your cart is empty.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Only show total section if there are items in the cart -->
+        {% if items %}
+        <div id="total-container" style="display:none;">
+            <div class="total-section">
+                <div class="total-label">Total Price of Products:</div>
+                <div class="total-value" id="product-total-price">$0.00</div>
+            </div>
+            <div class="total-section">
+                <div class="total-label">Shipping (Fixed):</div>
+                <div class="total-value">$20.00</div>
+            </div>
+            <div class="total-section">
+                <div class="total-label">Total after Shipping:</div>
+                <div class="total-value" id="total-after-shipping">$20.00</div>
+            </div>
+        </div>
+
+        <!-- Checkout Button -->
+        <div class="checkout-container">
+            <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+        </div>
+        {% else %}
+        <p>Your cart is empty. Add some products to see the total and proceed to checkout.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- JavaScript to Calculate Total Price and Total After Shipping -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const productTotals = document.querySelectorAll('.product-total');
+        const productTotalPriceElement = document.getElementById('product-total-price');
+        const totalAfterShippingElement = document.getElementById('total-after-shipping');
+        const totalContainer = document.getElementById('total-container');
+        const shippingCost = 20.00;
+
+        let totalPrice = 0;
+
+        // Calculate the total price of products in the cart
+        productTotals.forEach(function (productTotal) {
+            const price = parseFloat(productTotal.textContent.replace('$', ''));
+            totalPrice += price;
+        });
+
+        if (totalPrice > 0) {
+            // Show the total section
+            totalContainer.style.display = 'block';
+
+            // Update the total price of products
+            productTotalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
+
+            // Update the total after adding the shipping cost
+            const totalAfterShipping = totalPrice + shippingCost;
+            totalAfterShippingElement.textContent = `$${totalAfterShipping.toFixed(2)}`;
+        }
+    });
+</script>
+{% endblock %}

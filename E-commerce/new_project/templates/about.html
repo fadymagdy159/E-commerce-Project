@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center">
+    <img src="{% static 'images/about-us-page.png' %}" class="img-fluid rounded shadow-lg me-4" alt="About Us" style="max-height: 400px;">
+    <div>
+        <h1>About Us</h1>
+        <p class="mt-4 lead">We are committed to providing the best products and services to our customers. Join us on our journey to excellence.</p>
+        <div class="mt-4">
+            <a href="https://www.facebook.com" class="me-3" target="_blank" title="Follow us on Facebook"><i class="bi bi-facebook" style="font-size: 2rem; color: #3b5998;"></i></a>
+            <a href="https://www.instagram.com" class="me-3" target="_blank" title="Follow us on Instagram"><i class="bi bi-instagram" style="font-size: 2rem; color: #e4405f;"></i></a>
+            <a href="https://www.twitter.com" class="me-3" target="_blank" title="Follow us on Twitter"><i class="bi bi-twitter" style="font-size: 2rem; color: #55acee;"></i></a>
+            <a href="mailto:youremail@example.com" title="Send us an email"><i class="bi bi-envelope-fill" style="font-size: 2rem; color: #d44638;"></i></a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

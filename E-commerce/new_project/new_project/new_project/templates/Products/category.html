@@ -1,0 +1,106 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Category - {{ category_name }}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #4d6286, #476088);
+            color: #ffffff;
+        }
+        .navbar {
+            background: linear-gradient(to right, #141e30, #243b55);
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .navbar-brand:hover, .nav-link:hover {
+            color: #ffde7d !important;
+            transform: scale(1.1);
+        }
+        .btn-3d {
+            background-color: #ff4b2b;
+            color: #ffffff;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 8px;
+        }
+        .btn-3d:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(255, 75, 43, 0.4);
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .product-card {
+            background-color: #ffffff;
+            color: #000;
+            border-radius: 8px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .product-card img {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            height: 400px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    {% include 'base.html' %}
+    
+    <div class="container mt-5">
+        <h1 class="mb-4">Products in Category: {{ category_name }}</h1>
+        <div class="row">
+            {% if products %}
+                {% for product in products %}
+                <div class="col-md-4 mb-4">
+                    <div class="card product-card h-100">
+                        <img src="{{ product.img }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                            <p class="card-text"><strong>${{ product.price }}</strong></p>
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">More Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No products found in this category.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dropdownElements = document.querySelectorAll('.dropdown-toggle');
+            dropdownElements.forEach(function(dropdown) {
+                new bootstrap.Dropdown(dropdown);
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

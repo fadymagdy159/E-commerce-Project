@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-4 shadow-lg" style="background: rgba(255, 255, 255, 0.1); border-radius: 15px; box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);">
+        <h2 class="text-center mb-4">Update Product</h2>
+
+        <!-- Display current product details -->
+        <div class="mb-3 text-center">
+            <!-- Display current product image -->
+            <img src="{{ product.img }}" class="img-fluid mb-3" style="max-height: 200px; object-fit: cover;" alt="{{ product.name }}">
+            <p><strong>Current Name:</strong> {{ product.name }}</p>
+            <p><strong>Current Description:</strong> {{ product.description }}</p>
+            <p><strong>Current Price:</strong> ${{ product.price }}</p>
+        </div>
+
+        <!-- Form to update product details -->
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <!-- Product Name Input -->
+            <div class="form-group mb-3">
+                <label for="id_name" class="form-label">Product Name</label>
+                <input type="text" class="form-control form-control-lg" id="id_name" name="name" value="{{ product.name }}" required>
+                <div class="invalid-feedback">Please provide a product name.</div>
+            </div>
+            
+            <!-- Product Description Input -->
+            <div class="form-group mb-3">
+                <label for="id_description" class="form-label">Product Description</label>
+                <textarea class="form-control form-control-lg" id="id_description" name="description" rows="4" required>{{ product.name }} from {{product.seller }} </textarea>
+                <div class="invalid-feedback">Please provide a product description.</div>
+            </div>
+
+            <!-- Product Price Input -->
+            <div class="form-group mb-3">
+                <label for="id_price" class="form-label">Product Price</label>
+                <input type="number" class="form-control form-control-lg" id="id_price" name="price" value="{{ product.price }}" min="0" step="0.01" required>
+                <div class="invalid-feedback">Please provide a valid product price.</div>
+            </div>
+
+            <!-- Product Image Input -->
+            <div class="form-group mb-3">
+                <label for="id_image" class="form-label">Product Image</label>
+                <input type="file" class="form-control form-control-lg" id="id_image" name="image">
+                <div class="invalid-feedback">Please upload a product image.</div>
+            </div>
+
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-3d w-100">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<!-- Enable client-side validation for form fields -->
+<script>
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
+{% endblock %}

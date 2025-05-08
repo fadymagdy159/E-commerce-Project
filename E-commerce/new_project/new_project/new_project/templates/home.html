@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center">
+    <img src="{% static 'images/home_page.jpg' %}" class="img-fluid rounded shadow-lg me-4" alt="Home" style="max-height: 400px;">
+    <div>
+        <h1>Welcome to Our E-Commerce Site</h1>
+        <p class="mt-4 lead">Discover a wide range of products tailored to your needs. We bring you the best shopping experience.</p>
+        <a href="{% url 'all_products' %}" class="btn btn-3d mt-4">Shop Now</a>
+    </div>
+</div>
+{% endblock %}

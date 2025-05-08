@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <div class="col-md-6 text-center">
+            <img src="{{ product.img }}" class="img-fluid mb-3" style="max-height: 300px; object-fit: cover;" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <h3>{{ product.seller }}</h3>
+            <p><strong>Price:</strong> ${{ product.price }}</p>
+            <p><strong>Rating:</strong> {{ product.ratings }} / 5</p>
+            <p><strong>Total Ratings:</strong> {{ product.ratingsCount }}</p>
+            <p><strong>Shipping:</strong> ${{ product.shipping }}</p>
+            <p><strong>Description:</strong> {{ product.name }} from {{ product.seller }}</p>
+
+            <p><strong>Stock:</strong> {{ product.stock }}</p>
+            {% if user.is_superuser %}
+            <a href="{% url 'product_update' product.id %}" class="btn btn-secondary">Update</a>
+            <a href="{% url 'product_delete' product.id %}" class="btn btn-danger">Delete</a>
+            {% elif user.is_authenticated %}
+            <button class="btn btn-light" id="buyNowButton" data-product-id="{{ product.id }}">Buy It Now!</button>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-danger">Login First to be able to buy</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('buyNowButton').addEventListener('click', function() {
+        const productId = this.getAttribute('data-product-id');
+
+        window.location.href = `/add-to-cart/${productId}/`;
+    });
+</script>
+{% endblock %}

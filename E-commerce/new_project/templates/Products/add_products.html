@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-4 shadow-lg" style="background: rgba(255, 255, 255, 0.1); border-radius: 15px; box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);">
+        <h2 class="text-center mb-4">Add New Product</h2>
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <!-- Product Name -->
+            <div class="form-group mb-3">
+                <label for="id_name" class="form-label">Product Name</label>
+                <input type="text" class="form-control form-control-lg" id="id_name" name="name" required>
+                <div class="invalid-feedback">Please provide a product name.</div>
+            </div>
+            
+            <!-- Product Description -->
+            <div class="form-group mb-3">
+                <label for="id_description" class="form-label">Product Description</label>
+                <textarea class="form-control form-control-lg" id="id_description" name="description" rows="4" required></textarea>
+                <div class="invalid-feedback">Please provide a product description.</div>
+            </div>
+            
+            <!-- Seller -->
+            <div class="form-group mb-3">
+                <label for="id_seller" class="form-label">Seller</label>
+                <input type="text" class="form-control form-control-lg" id="id_seller" name="seller" required>
+                <div class="invalid-feedback">Please provide the seller's name.</div>
+            </div>
+
+            <!-- Product Price -->
+            <div class="form-group mb-3">
+                <label for="id_price" class="form-label">Product Price</label>
+                <input type="number" class="form-control form-control-lg" id="id_price" name="price" min="0" step="0.01" required>
+                <div class="invalid-feedback">Please provide a product price.</div>
+            </div>
+
+            <!-- Stock -->
+            <div class="form-group mb-3">
+                <label for="id_stock" class="form-label">Stock</label>
+                <input type="number" class="form-control form-control-lg" id="id_stock" name="stock" min="0" required>
+                <div class="invalid-feedback">Please provide the stock quantity.</div>
+            </div>
+
+            <!-- Ratings -->
+            <div class="form-group mb-3">
+                <label for="id_ratings" class="form-label">Ratings</label>
+                <input type="number" class="form-control form-control-lg" id="id_ratings" name="ratings" min="0" required>
+                <div class="invalid-feedback">Please provide the ratings.</div>
+            </div>
+
+            <!-- Ratings Count -->
+            <div class="form-group mb-3">
+                <label for="id_ratingsCount" class="form-label">Ratings Count</label>
+                <input type="number" class="form-control form-control-lg" id="id_ratingsCount" name="ratingsCount" min="0" required>
+                <div class="invalid-feedback">Please provide the ratings count.</div>
+            </div>
+
+            <!-- Product Image -->
+            <div class="form-group mb-3">
+                <label for="id_image" class="form-label">Product Image</label>
+                <input type="file" class="form-control form-control-lg" id="id_image" name="image" required>
+                <div class="invalid-feedback">Please upload a product image.</div>
+            </div>
+
+            <!-- Shipping -->
+            <div class="form-group mb-3">
+                <label for="id_shipping" class="form-label">Shipping Cost</label>
+                <input type="number" class="form-control form-control-lg" id="id_shipping" name="shipping" min="0" step="0.01" required>
+                <div class="invalid-feedback">Please provide the shipping cost.</div>
+            </div>
+
+            <!-- Quantity -->
+            <div class="form-group mb-3">
+                <label for="id_quantity" class="form-label">Quantity</label>
+                <input type="number" class="form-control form-control-lg" id="id_quantity" name="quantity" min="1" required>
+                <div class="invalid-feedback">Please provide the product quantity.</div>
+            </div>
+
+            <!-- Category -->
+            <div class="form-group mb-3">
+                <label for="id_category" class="form-label">Category</label>
+                <input type="text" class="form-control form-control-lg" id="id_category" name="category" required>
+                <div class="invalid-feedback">Please provide a category for the product.</div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-3d w-100">Add Product</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
